@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Insurance Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/lucide-static@0.9.1/icons.min.css"
+      rel="stylesheet"/>
+      
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: black;
+      }
+
+       #hero-gradient {
+            /* background: linear-gradient(135deg, #618264 0%, #96AC97 50%, #B8CBA8 100%); */
+            background: green;
+       }
+
+      /* Chat button */
+      #chat-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        background-color: #4285f4;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s;
+      }
+
+      #chat-button:hover {
+        transform: scale(1.05);
+        background-color: #3367d6;
+      }
+
+      /* Chat container */
+      #chat-container {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 350px;
+        height: 450px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 999;
+      }
+
+      #chat-container.active {
+        display: flex;
+      }
+
+      /* Chat header */
+      .chat-header {
+        background-color: #4285f4;
+        color: white;
+        padding: 15px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .close-button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      /* Chat messages area */
+      #chat-messages {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .message {
+        max-width: 80%;
+        padding: 10px 15px;
+        border-radius: 18px;
+        line-height: 1.4;
+      }
+
+      .user-message {
+        align-self: flex-end;
+        background-color: #e6e6e6;
+        border-bottom-right-radius: 5px;
+      }
+
+      .bot-message {
+        align-self: flex-start;
+        background-color: #f0f2f5;
+        border-bottom-left-radius: 5px;
+      }
+
+      /* Chat input area */
+      .chat-input-area {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid #e6e6e6;
+        background-color: white;
+      }
+
+      #user-input {
+        flex: 1;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 25px;
+        outline: none;
+        font-size: 14px;
+      }
+
+      #send-button {
+        width: 45px;
+        height: 45px;
+        margin-left: 10px;
+        background-color: #4285f4;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #send-button:hover {
+        background-color: #3367d6;
+      }
+      .typing-dots div {
+        width: 6px;
+        height: 6px;
+        background-color: #94a3b8;
+        border-radius: 50%;
+        display: inline-block;
+        margin: 0 1px;
+        animation: bounce 1s infinite ease-in-out;
+      }
+      .typing-dots div:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .typing-dots div:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .typing-dots div:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+
+      .max-w-none{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        justify-content: center;
+        text-align: left;
+        /* align-items: center; */
+      }
+
+      .content h2{
+        text-align: center;
+      }
+
+      .content {
+        overflow: hidden;
+        max-height: 60px; 
+        transition: max-height 0.3s ease;
+      }
+
+      .item{
+        color: white;
+        line-height: 2;
+      }
+
+      .expanded {
+        max-height: 10000px;
+      }
+
+      .read-more-btn {
+        color: white;
+        cursor: pointer;
+      }
+
+      .item-3{
+        grid-column: span 2;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <nav class="bg-white shadow-lg fixed w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="text-2xl font-bold text-green-800">InsuraLand</div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <!-- <a href="#features" class="text-gray-700 hover:text-green-800 font-medium">Features</a>
+                    <a href="#how-it-works" class="text-gray-700 hover:text-green-800 font-medium">How It Works</a>
+                    <a href="#impact" class="text-gray-700 hover:text-green-800 font-medium">Impact</a> -->
+                    <!-- <a href="new.html" class="text-gray-700 hover:text-green-800 font-medium">Learn More</a> -->
+                    <a href="index.html" class="bg-green-700 text-white px-4 py-2 rounded-md hover:bg-green-800">Go Back</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+     <div class="bg-white rounded-2xl shadow-xl p-8">
+        <h2 class="text-2xl font-semibold text-slate-800 mb-6">How It Works</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div
+            class="text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50"
+          >
+            <div
+              class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <i data-lucide="sparkles" class="w-8 h-8 text-white"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-800 mb-2">
+              AI Analysis
+            </h3>
+            <p class="text-slate-600">
+              Our AI analyzes the entire page content to understand context and
+              key information.
+            </p>
+          </div>
+          <div
+            class="text-center p-6 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50"
+          >
+            <div
+              class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <i data-lucide="message-circle" class="w-8 h-8 text-white"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-800 mb-2">
+              Ask Questions
+            </h3>
+            <p class="text-slate-600">
+              Type your questions in the chat to get specific information from
+              the page content.
+            </p>
+          </div>
+          <div
+            class="text-center p-6 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50"
+          >
+            <div
+              class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <i data-lucide="send" class="w-8 h-8 text-white"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-800 mb-2">
+              Get Answers
+            </h3>
+            <p class="text-slate-600">
+              Receive concise, relevant summaries tailored to your specific
+              questions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-slate-800 mb-4">
+          Insurance Information
+        </h1>
+        <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+        
+        </p>
+      </header>
+
+      <div class="bg-green-800 rounded-2xl shadow-xl p-8 md:p-10 mb-8 " 
+        <div class="max-w-none ">
+
+          <div class="item">
+            <h3 class="text-2xl text-white font-semibold text-slate-800 mb-4 mt-8">
+              Insuraland Business
+           </h3>
+           <p
+             id="content-paragraph-1"
+             class="text-slate-700 text-white leading-relaxed mb-6 text-lg content" >
+            A Guide to Insuraland Business Insurance 
+
+Your business is the result of your vision, hard work, and significant investment. In a dynamic economic environment, unforeseen events like fires, theft, lawsuits, or supply chain disruptions can threaten everything you've built. Business Insurance from Insuraland is not just an expense; it's a strategic tool for managing risk, ensuring continuity, and protecting your legacy. 
+
+This guide explains our suite of insurance solutions designed to safeguard businesses of all sizes—from startups and SMEs to established corporations—across Nigeria. 
+
+1. What is Business Insurance? 
+
+Unlike personal insurance, Business Insurance is not a single policy. It is a portfolio of different types of coverage combined to create a comprehensive safety net around your company's specific operations, assets, and liabilities. Our expert advisors work with you to build a custom package that addresses your unique risks. 
+
+2. Core Coverage for Every Business 
+
+While every business is different, some protections are fundamental. Our policies are built on these core components: 
+
+a) Commercial Property Insurance 
+
+This is the foundation of asset protection. It covers the physical property your business owns or rents against a wide range of perils. 
+
+ * Building/Office Space: Protects the physical structure of your shop, office, factory, or warehouse. 
+
+ * Contents: Covers your equipment, machinery, office furniture, computers, and fixtures. 
+
+ * Stock/Inventory: Covers your raw materials and finished products, whether in storage or on the shop floor. 
+
+ * Common Perils Covered: Fire, Theft & Burglary, Flood & Storm Damage, Burst Pipes, Vandalism, and damage from breakdown of essential machinery like generators. 
+
+b) Public Liability Insurance 
+
+This is one of the most critical policies for any business that interacts with the public. 
+
+ * What it covers: It protects your business financially if your operations, products, or services cause bodily injury or property damage to a third party (e.g., a customer, a supplier, or a member of the public). 
+
+ * Example: A customer slips on a wet floor in your restaurant, or your construction work accidentally damages a neighbouring property. This policy would cover the legal fees and compensation claims. 
+
+c) Business Interruption Insurance 
+
+Physical damage can be repaired, but can your business survive the downtime? This policy helps you do just that. 
+
+ * What it covers: If a covered event (like a fire) forces you to shut down temporarily, this policy covers your lost income and ongoing expenses—such as salaries, rent, and utilities—until you can resume normal operations. It is the key to business survival after a major disaster. 
+
+3. Specialized Insurance for Specific Needs 
+
+Beyond the core policies, we offer specialized coverage to address risks unique to your industry and operations. 
+
+ * Goods-in-Transit Insurance: Essential for any business that moves goods. This policy protects your inventory and products from loss or damage while being transported by road, rail, or sea within Nigeria. 
+
+ * Professional Indemnity Insurance: A must-have for service-based professionals like doctors, lawyers, architects, IT consultants, and engineers. It covers you against claims of negligence, errors, or omissions that lead to a client's financial loss. 
+
+ * Employer’s Liability Insurance (Group Personal Accident): While the Employee's Compensation Act (ECA) provides a statutory level of cover, this policy offers enhanced protection. It covers medical expenses and provides compensation to employees (or their families) who suffer injury, disability, or death while on the job. 
+
+ * Fidelity Guarantee Insurance: Protects your business from financial loss due to fraud or dishonesty by your own employees, such as theft of money or stock. 
+
+ * Commercial Vehicle Insurance: Provides tailored coverage for your company's cars, trucks, vans, and motorcycles, ensuring your fleet is protected. 
+
+ * Cyber Liability Insurance: For any business that stores customer data, operates online, or uses digital systems. This policy protects against the high costs of data breaches, hacking incidents, and other cyber threats. 
+
+4. Which Insurance Does My Business Need? A Quick Guide 
+
+| If you are a... | You should strongly consider... | 
+
+|---|---| 
+
+| Retail Shop Owner | Commercial Property, Public Liability, Burglary, Goods-in-Transit | 
+
+| Restaurant Owner | Commercial Property (Fire), Public Liability, Business Interruption | 
+
+| IT Consulting Firm | Professional Indemnity, Public Liability, Office Contents, Cyber Liability | 
+
+| Small Manufacturer | Commercial Property (Machinery), Business Interruption, Public Liability, Employer's Liability/GPA, Goods-in-Transit | 
+
+| Logistics/Haulage Company | Goods-in-Transit, Commercial Vehicle (Fleet), Public Liability | 
+
+5. The Claims Process: Your Partner in Recovery 
+
+When you face a business crisis, you need a partner who acts fast. Our claims process is built for efficiency and support. 
+
+ * Ensure Safety & Mitigate Loss: Prioritise the safety of your staff and customers. Take reasonable steps to prevent the situation from getting worse. 
+
+ * Notify Us Immediately: Contact your dedicated agent or our 24/7 commercial claims hotline. 
+
+ * Document Everything: Take detailed photos and videos of any damage. Preserve records, gather witness statements, and file a police report if theft or crime is involved. 
+
+ * Submit Your Claim: We will provide you with the necessary forms and guide you on the required documentation for a swift review. 
+
+ * Assessment & Settlement: A professional loss adjuster will be assigned to your case to assess the claim's validity and value. Upon approval, we will process your settlement promptly to help you get back to business. 
+
+Frequently Asked Questions (FAQ) 
+
+Q: I run a small business from home. Do I really need business insurance? 
+
+A: Yes. Your standard home insurance policy typically excludes business-related activities, property, and liabilities. A dedicated business policy is needed to cover your business stock, equipment, and any potential liability claims. 
+
+Q: Is any business insurance compulsory in Nigeria? 
+
+A: Yes. The Employee Compensation Act (ECA) is mandatory for all employers. Additionally, specific laws like the Occupiers' Liability Act require businesses to ensure the safety of visitors, making Public Liability insurance practically essential. Certain industries may also have specific regulatory insurance requirements. 
+
+Q: What is the difference between Public Liability and Professional Indemnity? 
+
+A: Public Liability covers claims for physical injury or property damage. Professional Indemnity covers claims for financial loss resulting from your professional advice or services. 
+
+Your Business is Your Legacy. Let's Secure Its Future. 
+
+Choosing the right insurance is a critical business decision. Our experienced commercial risk advisors are here to help you understand your risks and design a protection plan that fits your industry, size, and budget. 
+
+ * Request a Free Consultation with a Business Advisor: [Link to Consultation Page] 
+
+ * Get a Custom Quote: [Link to Your Quote Page] 
+
+ * Call Our Commercial Team: [Insert Business Customer Service Phone Number] 
+
+Build with confidence. Grow with security. Insure with Insuraland. 
+
+ 
+           </p>
+           <span class="read-more-btn" id="readMoreBtn">Read More</span>
+          </div>
+
+          <div class="item">
+            <h3 class="text-2xl text-white font-semibold text-slate-800 mb-4 mt-8">
+              Insuraland Property 
+            </h3>
+            <p
+              id="content-paragraph-2"
+              class="text-slate-700 text-white leading-relaxed mb-6 text-lg content">
+
+Your home is more than just a building; it's your sanctuary, your biggest investment, and the centre of your family's life. At Insuraland, we understand that protecting it from unforeseen events is a top priority. Our Property Insurance is a comprehensive safety net designed to shield you from the financial devastation that can follow a fire, flood, theft, or other disasters. 
+
+This guide explains how our policies work to provide security and peace of mind for homeowners, tenants, and landlords alike. 
+
+1. Who Needs Property Insurance? 
+
+Property insurance isn't just for those who own a standalone house. We have tailored solutions for every living situation: 
+
+ * Homeowners: If you own your house (bungalow, duplex, mansion), this insurance protects the physical structure and all your personal belongings inside it. 
+
+ * Tenants (Renters): Your landlord’s insurance covers the building, but not your personal property. Our Tenant’s Policy (or Contents Insurance) protects your furniture, electronics, clothing, and other valuables against theft, fire, or water damage. 
+
+ * Landlords: If you own property that you rent out to others, our Landlord’s Insurance protects your physical building, covers loss of rental income if the property becomes uninhabitable, and protects you against liability claims. 
+
+ * Condo / Flat / Apartment Owners: While the building's exterior and common areas are often covered by an estate or association policy, you are responsible for the interior of your unit. Our policy covers your interior fixtures, fittings, upgrades, and all your personal contents. 
+
+2. What Does Our Property Insurance Cover? 
+
+Our policies are built around two core components, which can be purchased together or separately: Building and Contents. 
+
+a) The Physical Structure (Building Insurance) 
+
+This covers the cost of repairing or rebuilding your home if it's damaged. It includes: 
+
+ * The main dwelling, including its walls, roof, floors, and ceilings. 
+
+ * Permanent fixtures and fittings like built-in kitchens, wardrobes, and bathroom suites. 
+
+ * Outbuildings such as boys' quarters, garages, gatehouses, and perimeter fences. 
+
+b) Your Personal Belongings (Contents Insurance) 
+
+This covers the value of the movable items inside your home. Essentially, if you could tip your house upside down, everything that would fall out is considered 'contents'. This includes: 
+
+ * Furniture, appliances, and electronics. 
+
+ * Clothing, shoes, and jewelry. 
+
+ * Kitchenware, books, and decorative items. 
+
+ * Rugs and carpets. 
+
+c) Additional Standard Benefits in Our Comprehensive Policy 
+
+ * Liability Protection: Covers you financially if a visitor (e.g., a guest, a delivery person) is injured on your property and you are found to be legally responsible. 
+
+ * Alternative Accommodation: If your home becomes uninhabitable due to a covered event like a fire or major flood, this benefit covers the cost of temporary housing (e.g., a hotel or rented apartment) while your home is being repaired. 
+
+3. Covered Perils: What We Protect You Against 
+
+Our policies are designed to protect you from a wide range of common risks, known as 'perils'. Standard coverage includes: 
+
+ * Fire, Lightning, and Explosion: Protection from damage caused by fire, including from domestic gas explosions. 
+
+ * Theft and Burglary: Covers loss of property and damage to your building resulting from forced entry or attempted theft. 
+
+ * Flood and Storm Damage: Crucial protection against damage from heavy rains, overflowing rivers, and severe storms. 
+
+ * Water Damage: Covers damage from burst pipes, water tanks, and overflowing appliances. 
+
+ * Impact Damage: Covers damage caused by a vehicle or falling aircraft, trees, or utility poles. 
+
+ * Riot, Strike, and Civil Commotion: Protects your property from damage caused during periods of social unrest. 
+
+ * Vandalism and Malicious Damage: Covers intentional damage to your property by a third party. 
+
+4. How Your Premium is Calculated 
+
+Your premium is tailored to your specific situation, based on these key factors: 
+
+ * Rebuilding Cost: The estimated cost to completely rebuild your home's structure. Note: This is different from the market value of your property, as it does not include the value of the land. 
+
+ * Value of Contents: The total replacement cost of all your personal belongings. 
+
+ * Location: The risk profile of your neighbourhood, including its history of flooding or burglary. 
+
+ * Construction Type: The materials used to build your home (e.g., concrete block, brick). 
+
+ * Security Features: We offer discounts for properties with approved security systems, fire alarms, fire extinguishers, and other safety measures. 
+
+ * Claims History: A history of no claims can lead to lower premiums. 
+
+5. The Claims Process: Your Guide in a Crisis 
+
+When disaster strikes, our claims process is designed to be clear, supportive, and efficient. 
+
+ * Prioritise Safety & Prevent Further Damage: Your first priority is the safety of you and your family. Once safe, take reasonable steps to prevent further damage (e.g., covering a damaged roof with a tarp). 
+
+ * Contact Us Immediately: Notify our claims team as soon as possible. Our 24/7 hotline is always available to guide you on the next steps. 
+
+ * Document the Damage: Before you clean up, take as many photos and videos of the damage as you can. Make a list of all damaged or stolen items. 
+
+ * File Your Claim: Complete the claim form and submit it along with your documentation (photos, a police report for theft, purchase receipts for valuable items if you have them). 
+
+ * Assessment and Settlement: We will assign a professional loss adjuster to visit your property and assess the extent of the damage. Once approved, we will settle the claim by paying for repairs, replacing items, or providing a cash settlement, as outlined in your policy. 
+
+Frequently Asked Questions (FAQ) 
+
+Q: How do I figure out how much my contents are worth? 
+
+A: The best way is to go room by room and list your belongings, estimating what it would cost to replace them with new items today. 
+
+Q: Are my expensive items like art or jewelry covered? 
+
+A: Standard contents insurance covers these items up to a certain limit per item. For very high-value pieces, you may need to list them separately on your policy or take out a special 'All-Risks' extension for full coverage. 
+
+Q: My apartment building already has insurance. Do I still need my own policy? 
+
+A: Yes. The building’s insurance covers the structure and common areas. You need your own policy to protect your personal belongings and any improvements you've made to the interior of your apartment. 
+
+Your Home is Your Biggest Investment. Let's Protect It Together. 
+
+Don't leave your most valuable asset to chance. Our expert advisors are ready to help you build a policy that provides complete protection. 
+
+ * Get a Free, No-Obligation Quote Online: [Link to Your Quote Page] 
+
+ * Speak to an Insurance Advisor: [Insert Customer Service Phone Number] 
+
+ * Visit a Branch Near You: [Link to Branch Locator] 
+
+Secure your sanctuary. Secure your future. Insure with Insuraland. 
+
+ 
+            </p>
+            <span class="read-more-btn" id="readMoreBtn">Read More</span>
+          </div>
+
+          <div class="item item-3">
+            <h3 class="text-2xl text-white font-semibold text-slate-800 mb-4 mt-8">
+               Insuraland Automobile Insurance 
+            </h3>
+            <p
+              id="content-paragraph-3"
+              class="text-slate-700 text-white leading-relaxed mb-6 text-lg content">  
+
+Driving on Nigerian roads comes with its own unique set of challenges and uncertainties. At Insuraland , we believe that while you can't predict the future, you can protect it. Our Automobile Insurance is more than just a policy; it's a promise to be there for you when you need it most, providing financial security and peace of mind every kilometre of the way. 
+
+This guide will walk you through everything you need to know about our automobile insurance plans. 
+
+1. What is Automobile Insurance? 
+
+Automobile insurance is a contract between you (the policyholder) and Insuraland (the insurer). You pay a regular fee, known as a premium, and in exchange, we agree to pay for specified car-related financial losses during the term of the policy. It's your financial shield against the costs of vehicle damage and liability claims. 
+
+In Nigeria, having at least a basic level of auto insurance is a legal requirement under the Motor Vehicles (Third Party Insurance) Act of 1945. 
+
+2. Our Core Coverage Options 
+
+We offer three main types of automobile insurance policies, designed to fit different needs and budgets. 
+
+a) Third-Party Only Insurance 
+
+This is the minimum level of cover required by Nigerian law. It is the most affordable option and provides essential protection. 
+
+ * What it covers: 
+
+   * Death or bodily injury to a third party (e.g., pedestrians, passengers in other vehicles). 
+
+   * Damage to a third party's property or vehicle. 
+
+ * Who it's for: 
+
+   * Drivers looking to meet the legal minimum requirement. 
+
+   * Owners of older, lower-value vehicles where the cost of comprehensive cover may not be economical. 
+
+ * What it does NOT cover: 
+
+   * Damage to your own vehicle. 
+
+   * Theft of your vehicle. 
+
+   * Fire damage to your vehicle. 
+
+b) Third-Party, Fire & Theft Insurance 
+
+This policy offers a balance between basic legal compliance and protection for your own vehicle against specific risks. 
+
+ * What it covers: 
+
+   * Everything included in our Third-Party Only policy. 
+
+   * PLUS: Loss or damage to your own vehicle if it is stolen or damaged by fire. 
+
+ * Who it's for: 
+
+   * Drivers who want more than the basic cover but do not need full protection against accidental damage. 
+
+   * Owners of mid-value cars or those living in areas with higher risks of theft. 
+
+c) Comprehensive Insurance 
+
+This is our highest level of protection, offering the most extensive coverage and the greatest peace of mind. 
+
+ * What it covers: 
+
+   * Everything included in our Third-Party, Fire & Theft policy. 
+
+   * PLUS: Accidental damage to your own vehicle, regardless of who is at fault. This includes damage from collisions, vandalism, and other incidents. 
+
+   * Medical expenses for you and your passengers up to a specified limit. 
+
+   * Damage to your windscreen and windows. 
+
+ * Who it's for: 
+
+   * Owners of new or high-value vehicles. 
+
+   * Drivers who rely heavily on their vehicle for daily use. 
+
+   * Anyone seeking maximum protection against a wide range of road risks. 
+
+3. Optional Add-Ons to Enhance Your Policy 
+
+Customize your Comprehensive policy with these valuable extensions for even greater protection: 
+
+ * Flood and Special Perils: Provides cover for damage caused by natural disasters like floods, storms, and typhoons, which are not typically covered under a standard policy. 
+
+ * Excess Buy-Back: An 'excess' is the first portion of a claim that you are responsible for paying. This add-on reduces your excess amount to zero, meaning we cover the full cost of repairs in a valid claim. 
+
+ * Vehicle Tracker Coverage: We offer a premium discount and enhanced theft protection for vehicles fitted with our approved tracking devices. 
+
+ * Roadside Assistance: Get 24/7 help with flat tyres, dead batteries, towing, and emergency fuel delivery. 
+
+ * Personal Accident Cover: Enhanced coverage for medical expenses, disability, or death resulting from an accident for the driver and named passengers. 
+
+4. How Your Insurance Premium is Calculated 
+
+Your premium is not a random number. It is carefully calculated based on a risk assessment. Key factors include: 
+
+ * The Vehicle: The make, model, age, and market value of your car. More expensive cars generally cost more to insure. 
+
+ * Type of Coverage: Comprehensive insurance has a higher premium than Third-Party Only because it offers significantly more coverage. 
+
+ * The Driver: Your age and driving experience can influence the premium. 
+
+ * Use of Vehicle: Whether the car is for personal use or commercial purposes. 
+
+ * Location: The area where you live and primarily drive can affect the risk of theft, vandalism, or accidents. 
+
+ * No-Claim Discount (NCD): For every year you don't make a claim, you earn a discount on your premium for the following year. It's our way of rewarding safe drivers! 
+
+5. The Claims Process: We Make It Simple 
+
+If you're involved in an incident, our goal is to make the claims process as smooth and stress-free as possible. 
+
+Step 1: Ensure Safety & Report 
+
+Your safety is the priority. If necessary, call for emergency services. Report the incident to the police, especially in cases of theft, major accidents, or injury. 
+
+Step 2: Contact Us Immediately 
+
+Notify our claims department as soon as possible. 
+
+Step 3: Document the Scene 
+
+If it is safe to do so, take pictures of the damage to all vehicles involved, the scene of the accident, and the other party's license plate and insurance details. 
+
+Step 4: Submit Your Claim Form 
+
+Complete the claim form provided by our team and submit it along with necessary documents. 
+
+Step 5: Assessment and Settlement 
+
+We will appoint an adjuster to assess the damage to your vehicle. Once the claim is approved, we will authorize repairs or provide a financial settlement as per your policy terms. 
+
+Frequently Asked Questions (FAQ) 
+
+Q: What is an 'excess'? 
+
+A: The excess is the pre-agreed amount you contribute towards a claim. For example, if your excess is ₦50,000 and the repair cost is ₦300,000, you would pay ₦50,000 and we would pay the remaining ₦250,000. 
+
+Q: Is my policy valid throughout Nigeria? 
+
+A: Yes, your Insuraland insurance policy provides coverage anywhere you drive within the Federal Republic of Nigeria. 
+
+Q: Can another person drive my insured car? 
+
+A: Yes, provided they have a valid driver's license and your permission. However, please review your policy documents, as certain terms may apply regarding the primary driver. 
+
+Q: What happens if I sell my car? 
+
+A: You can transfer the insurance to your new vehicle or cancel the policy. Please contact our customer service to discuss your options. 
+
+Ready to Get Protected? 
+
+Choosing the right insurance is a crucial decision. Our team of expert advisors is here to help you select the perfect plan that fits your needs and budget. 
+
+Drive with confidence. Drive with Insuraland . 
+
+Document 2: Insuraland Motorcycle & Tricycle Insurance 
+
+(Copy the text below this line) 
+
+A Complete Guide to Insuraland Motorcycle & Tricycle Insurance 
+
+Whether you ride a motorcycle (okada) for your daily commute, a tricycle (keke) to run your business, or a fleet for dispatch services, you are the engine of Nigeria's transport system. At Insuraland, we understand the unique risks you face on the road every day. Our Motorcycle & Tricycle Insurance is designed to provide robust, affordable protection that keeps you, your passengers, and your livelihood safe. 
+
+This guide covers everything you need to know about our specialized insurance plans. 
+
+1. Why Insurance is Essential for Your Bike or Keke 
+
+Insurance for your two or three-wheeler is more than just a legal document—it's your safety net. Given the higher vulnerability of riders, having the right cover is critical for financial protection against accidents, theft, and liability. 
+
+Just like with cars, the law in Nigeria requires every motorcycle and tricycle on the road to have at least Third-Party insurance. 
+
+2. Our Core Coverage Options 
+
+We offer tailored policies to match how you use your vehicle, from personal errands to commercial transport. 
+
+a) Third-Party Only Insurance 
+
+This is the mandatory minimum cover required by law. It’s a straightforward and affordable way to ensure you are legally compliant. 
+
+ * What it covers: 
+
+   * Death or bodily injury you may cause to a third party (e.g., pedestrians, other road users). 
+
+   * Damage you may cause to a third party's property, vehicle, or goods. 
+
+ * Who it's for: 
+
+   * Riders needing to meet the basic legal requirement at the lowest cost. 
+
+   * Owners of older, lower-value motorcycles or tricycles. 
+
+ * What it does NOT cover: 
+
+   * Damage to your own motorcycle or tricycle. 
+
+   * Theft of your motorcycle or tricycle. 
+
+   * Injury to yourself or your passengers. 
+
+b) Third-Party, Fire & Theft Insurance 
+
+This policy provides an essential layer of protection for your own asset against common risks, in addition to the mandatory third-party cover. 
+
+ * What it covers: 
+
+   * Everything included in our Third-Party Only policy. 
+
+   * PLUS: Loss or damage to your own motorcycle or tricycle if it is stolen or damaged by fire. 
+
+ * Who it's for: 
+
+   * Riders who want to protect their investment from theft, a common risk for two-wheelers. 
+
+   * Owners of mid-value or new bikes/kekes who want more than basic cover. 
+
+c) Comprehensive Insurance 
+
+Our highest level of cover, offering all-around protection for you, your vehicle, and third parties. It is the ultimate peace of mind for any rider. 
+
+ * What it covers: 
+
+   * Everything included in our Third-Party, Fire & Theft policy. 
+
+   * PLUS: Accidental damage to your own motorcycle or tricycle, regardless of who is at fault. 
+
+   * PLUS: A built-in Personal Accident Cover for the rider, providing compensation for injury or death. 
+
+ * Who it's for: 
+
+   * Owners of new or valuable motorcycles and tricycles. 
+
+   * Riders who depend on their vehicle for their daily income and cannot afford unexpected repair costs. 
+
+   * Anyone seeking the most complete protection available. 
+
+3. Specialized Cover for Commercial Riders (Okada/Keke) 
+
+We recognize that commercial riders have unique needs. Our specialized commercial policies include crucial extensions to keep your business running smoothly. 
+
+ * Passenger Liability Cover: This is essential for any rider carrying fare-paying passengers. It provides cover for the injury or death of a passenger while they are on your motorcycle or in your tricycle. 
+
+ * Enhanced Personal Accident Cover: Provides higher benefit limits for the rider in case of accidental injury, disability, or death, acknowledging the increased time spent on the road. 
+
+ * Goods-in-Transit Cover: A must-have for dispatch and delivery riders. This covers loss or damage to goods being transported, protecting you from liability to your clients. 
+
+4. How Your Insurance Premium is Calculated 
+
+We determine your premium based on several factors to ensure you get a fair price for your specific risk profile. 
+
+ * Type and Capacity: The type of vehicle (motorcycle or tricycle), its engine capacity (cc), age, and market value. 
+
+ * Use of Vehicle: This is a key factor. Premiums differ significantly for Private Use versus Commercial Use (e.g., public transport, ride-hailing, dispatch) due to the difference in mileage and risk exposure. 
+
+ * Type of Coverage: A Comprehensive policy will have a higher premium than a Third-Party Only policy. 
+
+ * Rider's Experience: The age and riding history of the primary operator. 
+
+ * Location: The primary area of operation (e.g., a busy city vs. a rural area). 
+
+ * No-Claim Discount (NCD): We reward safe riding! For every year you go without making a claim, you earn a discount on your next premium. 
+
+5. The Claims Process: Simple, Fast, and Fair 
+
+In the event of an incident, we're here to help you get back on the road quickly. 
+
+ * Stay Safe & Report: Your safety comes first. If there are injuries, seek medical help. Report the incident to the police to get a report, which is vital for your claim. 
+
+ * Contact Us Immediately: Call our 24/7 Claims Hotline or email us. 
+
+ * Document Everything: If possible, take photos of the scene, the damage to your vehicle, and any other property involved. Get the contact details of any third parties and witnesses. 
+
+ * Submit Your Claim: Fill out our straightforward claim form and submit it with your supporting documents (e.g., police report, photos, repair estimates). 
+
+ * Assessment and Settlement: Our team will review your claim, an adjuster will assess the damage, and upon approval, we will handle the settlement for repairs or replacement as defined in your policy. 
+
+Frequently Asked Questions (FAQ) 
+
+Q: I use my keke for public transport. Does my policy cover my passengers? 
+
+A: Only if you have a commercial policy that includes Passenger Liability Cover. A standard Third-Party or Comprehensive policy for private use will not cover fare-paying passengers. It is crucial to get the right type of cover. 
+
+Q: I use my motorcycle for a delivery service. Am I covered? 
+
+A: You need a commercial policy. For full protection, we strongly recommend a policy that includes Goods-in-Transit Cover to protect the items you are transporting. 
+
+Q: What happens if my motorcycle is stolen from where I parked it? 
+
+A: If you have Third-Party, Fire & Theft or Comprehensive Insurance, you are covered. You must report the theft to the police immediately and then file a claim with us. Third-Party Only insurance does not cover theft. 
+
+Ready to Ride with Confidence? 
+
+Your motorcycle or tricycle is more than just a vehicle—it's your freedom and your business. Let us protect it. 
+
+Ride safe. Ride insured. Ride with Insuraland . 
+
+ 
+            </p>
+          </div>
+          <span class="read-more-btn" id="readMoreBtn">Read More</span>
+        </div>
+      </div>
+
+     
+
+    <!-- AI Chat Popup -->
+    <button id="chat-button">💬</button>
+
+    <!-- Chat container -->
+    <div id="chat-container">
+      <div class="chat-header">
+        <span>Chat with Us</span>
+        <button class="close-button" id="close-chat">✕</button>
+      </div>
+
+      <div id="chat-messages">
+        <div class="message bot-message">
+          Hi! I'm your virtual assistant. How can I help you today?
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <input
+          type="text"
+          id="user-input"
+          placeholder="Type your message here..."
+        />
+        <button id="send-button">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const chatButton = document.getElementById("chat-button");
+      const chatContainer = document.getElementById("chat-container");
+      const closeChat = document.getElementById("close-chat");
+      const userInput = document.getElementById("user-input");
+      const sendButton = document.getElementById("send-button");
+      const chatMessages = document.getElementById("chat-messages");
+
+      // Toggle chat visibility
+      chatButton.addEventListener("click", () => {
+        chatContainer.classList.toggle("active");
+        if (chatContainer.classList.contains("active")) {
+          userInput.focus();
+        }
+      });
+
+      closeChat.addEventListener("click", () => {
+        chatContainer.classList.remove("active");
+      });
+
+      // Send message function
+      function sendMessage() {
+        const message = userInput.value.trim();
+        if (message) {
+          // Add user message
+          addMessage(message, "user");
+
+          // Clear input
+          userInput.value = "";
+
+          // Simulate bot response (in a real app, you'd call an API here)
+          setTimeout(() => {
+            const response = generateResponse(message);
+            addMessage(response, "bot");
+          }, 600);
+        }
+      }
+
+      // Add message to chat
+      function addMessage(text, sender) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${sender}-message`;
+        messageDiv.textContent = text;
+        chatMessages.appendChild(messageDiv);
+
+        // Scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // Generate response (this is a simple demo - in reality you'd connect to a backend)
+      function generateResponse(message) {
+        const lowerMessage = message.toLowerCase();
+
+        if (lowerMessage.includes("hello") || lowerMessage.includes("hi")) {
+          return "Hello there! How can I help you today?";
+        } else if (lowerMessage.includes("help")) {
+          return "I'm here to assist you. You can ask me about our services, products, or general information.";
+        } else if (
+          lowerMessage.includes("product") ||
+          lowerMessage.includes("service")
+        ) {
+          return "We offer a wide range of products and services. Could you specify what you're interested in?";
+        } else if (lowerMessage.includes("thank")) {
+          return "You're welcome! Is there anything else I can help you with?";
+        } else if (
+          lowerMessage.includes("bye") ||
+          lowerMessage.includes("goodbye")
+        ) {
+          return "Goodbye! Feel free to chat again if you have more questions.";
+        } else {
+          return (
+            'Thanks for your message. In a full implementation, I would connect to a backend service to provide a relevant response to your question about: "' +
+            message +
+            '"'
+          );
+        }
+      }
+
+      // Event listeners for sending messages
+      sendButton.addEventListener("click", sendMessage);
+
+      userInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          sendMessage();
+        }
+      });
+
+      // Close chat when clicking outside (optional)
+      document.addEventListener("click", (e) => {
+        if (
+          !chatContainer.contains(e.target) &&
+          !chatButton.contains(e.target) &&
+          chatContainer.classList.contains("active")
+        ) {
+          chatContainer.classList.remove("active");
+        }
+      });
+
+
+
+
+
+
+
+      // ...existing code...
+
+// Read More functionality
+const contents = document.querySelectorAll('.content');
+const btns = document.querySelectorAll('.read-more-btn');
+
+btns.forEach((btn, idx) => {
+  btn.addEventListener('click', function () {
+    contents[idx].classList.toggle('expanded');
+    btn.textContent = contents[idx].classList.contains('expanded') ? 'Read Less' : 'Read More';
+  });
+});
+
+// ...existing code...;
+    </script>
+  </body>
+</html>
